@@ -1,8 +1,9 @@
 import express from 'express';
+import routes from './routes/index';
 
 const app = express();
+app.use(routes);
 
-app.get('/', (req, res) => res.json({ hello: 'world' }));
 app.listen(3333, () => {
   console.log('Server running on port 3333! 🚀');
 });
