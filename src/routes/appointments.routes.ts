@@ -6,8 +6,8 @@ const appointmentRouter = Router();
 
 const appointmentRepository = new AppointmentsRepository();
 
-appointmentRouter.post('/', (req, res) => {
-  const { provider, date } = req.body;
+appointmentRouter.post('/', (request, response) => {
+  const { provider, date } = request.body;
   const parsedDate = startOfHour(parseISO(date));
 
   const findAppointmentInSameDate = appointmentRepository.findByDate(
@@ -15,12 +15,12 @@ appointmentRouter.post('/', (req, res) => {
   );
 
   if (findAppointmentInSameDate) {
-    return res
+    return response
       .status(400)
       .json({ message: 'This appointment is already booked' });
   }
   const appointment = appointmentRepository.create(provider, parsedDate);
 
-  return res.json(appointment);
+  return response.json(appointment);
 });
 export default appointmentRouter;
