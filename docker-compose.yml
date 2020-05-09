@@ -18,3 +18,5 @@ services:
     environment:
       POSTGRES_USER: "docker"
       POSTGRES_PASSWORD: "docker"
+    volumes:
+      - .:/usr/app/var/lib/postgresql/data
