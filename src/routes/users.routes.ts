@@ -14,8 +14,7 @@ usersRoute.post('/', async (request, response) => {
       password,
     });
 
-    const { id, created_at, updated_at } = user;
-    return response.json({ id, name, email, created_at, updated_at });
+    return response.json(user);
   } catch (err) {
     return response.status(400).json({ message: err.message });
   }
