@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import User from '../models/User';
+import authConfig from '../config/auth';
 
 interface Request {
   email: string;
@@ -26,9 +27,9 @@ class AuthenticateUserService {
       throw new Error('Incorrect credentials');
     }
 
-    const token = sign({}, '44da34b5eec182d24fcaeaa7e356e0d5', {
+    const token = sign({}, authConfig.secret, {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn: authConfig.expiresIn,
     });
 
     delete user.password;
