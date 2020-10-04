@@ -1,20 +1,20 @@
 import path from 'path';
 import fs from 'fs';
-import { getRepository } from 'typeorm';
 import User from '@modules/users/infra/typeorm/entities/User';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
-interface Request {
+interface IRequest {
   user_id: string;
   avatarFilename: string;
 }
 
 export default class UpdateUserAvatarService {
-  public async execute({ user_id, avatarFilename }: Request): Promise<User> {
-    const userRepository = getRepository(User);
+  constructor(private usersRepository: IUsersRepository) {}
 
-    const user = await userRepository.findOne(user_id);
+  public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
+    const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
       throw new AppError(
@@ -34,7 +34,7 @@ export default class UpdateUserAvatarService {
     }
 
     user.avatar = avatarFilename;
-    await userRepository.save(user);
+    await this.usersRepository.save(user);
     return user;
   }
 }
